@@ -54,6 +54,7 @@ int main(int argc, char** argv)
     std::vector<TipsyFile>    tipsyfiles(input_files.size());
     std::vector<std::string>  snap_ids;
     std::vector<float>        snap_times;
+        snapname.append(".");
     for(unsigned i = 0; i < input_files.size(); i++)
     {
         // Open file and read header
@@ -61,7 +62,6 @@ int main(int argc, char** argv)
         tipsyfiles[i].read_header(input_files[i].c_str());
 
         // Store snapshot ID and time
-        snapname.append(".");
         int v = input_files[i].find(snapname);
         std::string id = input_files[i].substr(v+snapname.length(), input_files[i].length());
         snap_ids.push_back(id);
@@ -122,7 +122,7 @@ int main(int argc, char** argv)
       snr2 = cgt(t);
       snr1time = snaptime(snr1);
       snr2time = snaptime(snr2);
-      fidx = (t-snr2time) / (snr2time - snr1time);
+      fidx = (t-snr1time) / (snr2time - snr1time);
       snr1s.push_back(snr1);
       snr2s.push_back(snr2);
       fidxs.push_back(fidx);
@@ -138,10 +138,10 @@ int main(int argc, char** argv)
         exit(0);      
     }
     std::ostream scene(&fb);
-    scene << "snapshot_base1 snapshot_base2 fidx";
+    scene << "snapshot_base1 snapshot_base2 fidx" << std::endl;
     for(unsigned i = 0; i < snr1s.size(); i++)
     {
-        std::cout << snr1s[i] << " " << snr2s[i] << " " << fidxs[i] << std::endl;
+       scene  << snr1s[i] << " " << snr2s[i] << " " << fidxs[i] << std::endl;
     }
     fb.close();
 
