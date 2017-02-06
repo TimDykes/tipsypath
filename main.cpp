@@ -113,22 +113,22 @@ int main(int argc, char** argv)
     };
 
     std::vector<std::string> snr1s, snr2s;
-    std::vector<float> fidxs;
+    std::vector<float> fracs;
     std::string snr1, snr2;
-    float fidx,snr1time,snr2time;
+    float frac,snr1time,snr2time;
     for (float t = tmin; t <= tmax; t += dt)
     {
       snr1 = clteq(t);
       snr2 = cgt(t);
       snr1time = snaptime(snr1);
       snr2time = snaptime(snr2);
-      fidx = (t-snr1time) / (snr2time - snr1time);
+      frac = (t-snr1time) / (snr2time - snr1time);
       snr1s.push_back(snr1);
       snr2s.push_back(snr2);
-      fidxs.push_back(fidx);
+      fracs.push_back(frac);
     }
 
-    //Write snapshot_base1 snapshot_base2 fidx to file
+    // Write snapshot_base1 snapshot_base2 frac to file
     
     std::filebuf fb;
     fb.open("output.scene", std::ios::out);
@@ -138,10 +138,10 @@ int main(int argc, char** argv)
         exit(0);      
     }
     std::ostream scene(&fb);
-    scene << "snapshot_base1 snapshot_base2 fidx" << std::endl;
+    scene << "snapshot_base1 snapshot_base2 frac" << std::endl;
     for(unsigned i = 0; i < snr1s.size(); i++)
     {
-       scene  << snr1s[i] << " " << snr2s[i] << " " << fidxs[i] << std::endl;
+       scene  << snr1s[i] << " " << snr2s[i] << " " << fracs[i] << std::endl;
     }
     fb.close();
 
