@@ -86,7 +86,7 @@ int main(int argc, char** argv)
     float tmin, tmax;
     tmin = *(std::min_element(snap_times.begin(), snap_times.end()));
     tmax = *(std::max_element(snap_times.begin(), snap_times.end()));
-    float dt = (tmax-tmin)/nframes;
+    float dt = (tmax-tmin)/(nframes-1);
 
     auto clteq = [&snap_times, &snap_ids](float t){
         // Return id of snapshot with closest time lower than or equal to t
@@ -138,10 +138,10 @@ int main(int argc, char** argv)
         exit(0);      
     }
     std::ostream scene(&fb);
-    scene << "snapshot_base1 snapshot_base2 frac" << std::endl;
+    scene << "snapshot_base1 snapshot_base2 frac fidx" << std::endl;
     for(unsigned i = 0; i < snr1s.size(); i++)
     {
-       scene  << snr1s[i] << " " << snr2s[i] << " " << fracs[i] << std::endl;
+       scene  << snr1s[i] << " " << snr2s[i] << " " << fracs[i] << " " << i << std::endl;
     }
     fb.close();
 
